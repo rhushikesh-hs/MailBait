@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Create Campaign</title></head>
+<body>
+  <h1>Create Campaign</h1>
+  <form method="post">
+    <label>Name</label><br><input name="name" style="width:400px"><br><br>
+    <label>Subject</label><br><input name="subject" style="width:400px"><br><br>
+    <label>Body (HTML) - use {{'{{TRACK}}'}} where tracking link should go</label><br>
+    <textarea name="body" rows="8" cols="80">
+<p>Hello,</p>
+<p>Please verify your account: <a href="{{TRACK}}">Verify now</a></p>
+    </textarea><br><br>
+    <label>Recipients (comma separated)</label><br>
+    <input name="recipients" style="width:600px"><br><br>
+    <button type="submit">Create & Send</button>
+  </form>
+  <p><a href="/">Back</a></p>
+</body>
+</html>

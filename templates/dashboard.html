@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Campaign Stats</title></head>
+<body>
+  <h1>Campaign Stats</h1>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>Email</th><th>Clicked?</th></tr>
+    {% for r in rows %}
+      <tr>
+        <td>{{ r[0] }}</td>
+        <td>{{ 'Yes' if r[1] == 1 else 'No' }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <p><a href="/">Back</a></p>
+</body>
+</html>
