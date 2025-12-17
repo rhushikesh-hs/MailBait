@@ -1,20 +1,54 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Create Campaign</title></head>
-<body>
-  <h1>Create Campaign</h1>
-  <form method="post">
-    <label>Name</label><br><input name="name" style="width:400px"><br><br>
-    <label>Subject</label><br><input name="subject" style="width:400px"><br><br>
-    <label>Body (HTML) - use {{'{{TRACK}}'}} where tracking link should go</label><br>
-    <textarea name="body" rows="8" cols="80">
-<p>Hello,</p>
-<p>Please verify your account: <a href="{{TRACK}}">Verify now</a></p>
-    </textarea><br><br>
-    <label>Recipients (comma separated)</label><br>
-    <input name="recipients" style="width:600px"><br><br>
-    <button type="submit">Create & Send</button>
-  </form>
-  <p><a href="/">Back</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Create Campaign • MailBait{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="glass p-4 p-md-5">
+        <div class="mb-4">
+          <h2 class="h4 mb-1">Create Phishing Campaign</h2>
+          <p class="small-muted mb-0">
+            Define a simulated phishing email and send it to selected recipients.
+            Use <code>{{ '{{TRACK}}' }}</code> where the tracking link should appear.
+          </p>
+        </div>
+
+        <form method="post" class="row g-4">
+          <div class="col-md-6">
+            <label class="form-label">Campaign Name</label>
+            <input name="name" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Password Reset Simulation">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Email Subject</label>
+            <input name="subject" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Your password expires in 24 hours">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Email Body (HTML)
+              <span class="small-muted"> – include <code>{{ '{{TRACK}}' }}</code> in the link href.</span>
+            </label>
+            <textarea name="body" rows="8" class="form-control bg-dark text-light border-secondary">{% raw %}
+<p>Dear user,</p>
+<p>Your account requires verification. Please click the link below:</p>
+<p><a href="{{TRACK}}">Verify now</a></p>
+<p>Regards,<br>IT Helpdesk</p>
+{% endraw %}</textarea>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Recipients</label>
+            <input name="recipients" class="form-control bg-dark text-light border-secondary" placeholder="user1@example.com, user2@example.com">
+            <div class="form-text small-muted">Enter one or more email addresses separated by commas.</div>
+          </div>
+
+          <div class="col-12 d-flex justify-content-between">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-info">🚀 Send Campaign</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

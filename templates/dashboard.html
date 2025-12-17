@@ -1,17 +1,77 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Campaign Stats</title></head>
-<body>
-  <h1>Campaign Stats</h1>
-  <table border="1" cellpadding="6" cellspacing="0">
-    <tr><th>Email</th><th>Clicked?</th></tr>
-    {% for r in rows %}
-      <tr>
-        <td>{{ r[0] }}</td>
-        <td>{{ 'Yes' if r[1] == 1 else 'No' }}</td>
-      </tr>
-    {% endfor %}
-  </table>
-  <p><a href="/">Back</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Campaign Stats • MailBait{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center mb-3">
+    <div class="col-lg-9">
+      <div class="glass p-4">
+        <h2 class="h4 mb-3">Campaign Statistics</h2>
+        <p class="small-muted mb-3">Below you can see recipients and whether they clicked the simulated link.</p>
+
+        <div class="row g-3 align-items-center mb-3">
+          <div class="col-md-4">
+            <div class="card bg-dark bg-opacity-50 h-100">
+              <div class="card-body">
+                <div class="small-muted">Total Recipients</div>
+                <div class="fs-3 fw-bold">{{ total if total is defined else (rows|length) }}</div>
+                <div class="small-muted mt-2">
+                  Clicked: <span class="text-info fw-semibold">{{ clicked if clicked is defined else (rows|selectattr("1")|select("equalto",1)|list|length) }}</span><br>
+                  Not clicked: <span class="text-success fw-semibold">{{ not_clicked if not_clicked is defined else (rows|length - (rows|selectattr("1")|select("equalto",1)|list|length)) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <!-- placeholder for chart if you add it later -->
+            <div class="card bg-dark bg-opacity-25 p-3">
+              <div class="small-muted">Visual summary</div>
+              <div class="mt-2">(Add Chart here in the future)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass">
+          <div class="card-header bg-dark text-light">Recipient Detail</div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-dark table-hover mb-0 align-middle">
+                <thead class="table-secondary text-dark">
+                  <tr>
+                    <th>Email</th>
+                    <th style="width:160px;">Clicked?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if rows %}
+                    {% for r in rows %}
+                      <tr>
+                        <td>{{ r[0] }}</td>
+                        <td>
+                          {% if r[1] == 1 %}
+                            <span class="badge bg-success">Clicked</span>
+                          {% else %}
+                            <span class="badge bg-secondary">Not clicked</span>
+                          {% endif %}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="2" class="text-center small-muted">No recipients found for this campaign.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-footer bg-dark text-end">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">← Back to campaigns</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

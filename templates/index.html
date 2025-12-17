@@ -1,18 +1,96 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Admin - Campaigns</title></head>
-<body>
-  <h1>Phishing Simulator - Admin</h1>
-  <a href="/campaign/create">Create Campaign</a>
-  <h3>Campaigns</h3>
-  <ul>
-    {% for c in campaigns %}
-      <li>
-        {{ c[1] }} ({{ c[2] }}) — <a href="/campaign/{{ c[0] }}">View Stats</a>
-      </li>
-    {% else %}
-      <li>No campaigns yet</li>
-    {% endfor %}
-  </ul>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Dashboard • MailBait{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+  <div class="col-lg-10">
+    <div class="glass p-4 p-md-5">
+      <div class="row align-items-center">
+        <div class="col-md-7">
+          <h1 class="h3 mb-2">MailBait — Phishing Awareness Simulator</h1>
+          <p class="small-muted mb-3">
+            Launch simulated phishing campaigns, track clicks, and educate users with a training page.
+          </p>
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ url_for('create_campaign') }}" class="btn btn-info">🚀 Launch New Campaign</a>
+            <span class="small-muted align-self-center">
+              {% if campaigns %}{{ campaigns|length }} campaign{{ 's' if campaigns|length != 1 else '' }} created{% else %}No campaigns yet{% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-5 mt-4 mt-md-0">
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="card bg-dark bg-opacity-50">
+                <div class="card-body text-center">
+                  <div class="small-muted">Campaigns</div>
+                  <div class="fs-3 fw-bold text-info">{{ campaigns|length }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card bg-dark bg-opacity-50">
+                <div class="card-body text-center">
+                  <div class="small-muted">Focus</div>
+                  <div class="fs-5 fw-bold text-success">Awareness</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card bg-dark bg-opacity-25">
+                <div class="card-body small-muted">
+                  Tip: Use templates like "Password Reset" or "LMS Alert" for realistic simulations.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="glass">
+      <div class="d-flex justify-content-between align-items-center p-3 border-bottom border-secondary border-opacity-25">
+        <span class="fw-semibold">Recent Campaigns</span>
+        <a href="{{ url_for('create_campaign') }}" class="btn btn-sm btn-outline-info">+ Create</a>
+      </div>
+
+      {% if campaigns %}
+        <div class="table-responsive">
+          <table class="table table-dark table-hover mb-0 align-middle">
+            <thead class="table-secondary text-dark">
+              <tr>
+                <th>#</th>
+                <th>Campaign Name</th>
+                <th>Subject</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in campaigns %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ c[1] }}</td>
+                  <td class="small-muted">{{ c[2] }}</td>
+                  <td class="text-end">
+                    <a href="{{ url_for('campaign_dashboard', cid=c[0]) }}" class="btn btn-sm btn-outline-info">View Stats</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="p-4 text-center small-muted">
+          No campaigns created yet. Click <span class="text-info">“Create”</span> to launch your first simulation.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
